@@ -1,0 +1,963 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Campus Safety & Incident Management System | NCU</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #1e40af;
+            --primary-dark: #1e3a8a;
+            --secondary: #3b82f6;
+            --danger: #dc2626;
+            --success: #059669;
+            --warning: #d97706;
+            --gray-50: #f9fafb;
+            --gray-100: #f3f4f6;
+            --gray-200: #e5e7eb;
+            --gray-300: #d1d5db;
+            --gray-600: #4b5563;
+            --gray-700: #374151;
+            --gray-800: #1f2937;
+            --gray-900: #111827;
+            --white: #ffffff;
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(to bottom, #f9fafb, #f3f4f6);
+            min-height: 100vh;
+            color: var(--gray-900);
+            line-height: 1.6;
+        }
+
+        /* Navigation Bar */
+        .navbar {
+            background: var(--white);
+            border-bottom: 1px solid var(--gray-200);
+            box-shadow: var(--shadow-sm);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 16px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .brand-logo {
+            width: 44px;
+            height: 44px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 20px;
+            box-shadow: var(--shadow-md);
+        }
+
+        .brand-text h1 {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--gray-900);
+            letter-spacing: -0.025em;
+        }
+
+        .brand-text p {
+            font-size: 13px;
+            color: var(--gray-600);
+            font-weight: 500;
+        }
+
+        .nav-badge {
+            background: var(--gray-100);
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--gray-700);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .nav-badge i {
+            color: var(--primary);
+        }
+
+        /* Container */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 32px 24px;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: var(--white);
+            border-radius: 16px;
+            padding: 48px;
+            margin-bottom: 32px;
+            text-align: center;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--gray-200);
+        }
+
+        .hero-icon {
+            width: 72px;
+            height: 72px;
+            margin: 0 auto 24px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 36px;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .hero h1 {
+            font-size: clamp(28px, 4vw, 40px);
+            font-weight: 800;
+            color: var(--gray-900);
+            margin-bottom: 12px;
+            letter-spacing: -0.025em;
+        }
+
+        .hero p {
+            font-size: clamp(15px, 2vw, 17px);
+            color: var(--gray-600);
+            margin-bottom: 32px;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.7;
+        }
+
+        .emergency-btn {
+            background: linear-gradient(135deg, var(--danger), #b91c1c);
+            color: white;
+            border: none;
+            padding: 16px 40px;
+            font-size: 16px;
+            font-weight: 700;
+            border-radius: 12px;
+            cursor: pointer;
+            box-shadow: 0 4px 6px -1px rgba(220, 38, 38, 0.3);
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.025em;
+        }
+
+        .emergency-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(220, 38, 38, 0.4);
+        }
+
+        .emergency-btn:active {
+            transform: translateY(0);
+        }
+
+        /* Grid Layout */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(min(100%, 450px), 1fr));
+            gap: 24px;
+            margin-bottom: 24px;
+        }
+
+        /* Card Component */
+        .card {
+            background: var(--white);
+            padding: 32px;
+            border-radius: 16px;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--gray-200);
+            transition: all 0.2s ease;
+        }
+
+        .card:hover {
+            box-shadow: var(--shadow-lg);
+        }
+
+        .card-header {
+            color: var(--gray-900);
+            margin-bottom: 24px;
+            font-size: clamp(19px, 3vw, 22px);
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            letter-spacing: -0.025em;
+        }
+
+        .card-header i {
+            color: var(--primary);
+        }
+
+        /* Form Elements */
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--gray-700);
+            margin-bottom: 8px;
+        }
+
+        textarea {
+            width: 100%;
+            padding: 14px;
+            border: 2px solid var(--gray-300);
+            border-radius: 10px;
+            font-size: 15px;
+            font-family: inherit;
+            resize: vertical;
+            min-height: 140px;
+            transition: all 0.2s ease;
+            background: var(--white);
+            color: var(--gray-900);
+        }
+
+        textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(30, 64, 175, 0.1);
+        }
+
+        textarea::placeholder {
+            color: var(--gray-600);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            border: none;
+            padding: 13px 28px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 15px;
+            font-weight: 600;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 4px 6px -1px rgba(30, 64, 175, 0.2);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(30, 64, 175, 0.3);
+        }
+
+        .btn-primary:disabled {
+            background: var(--gray-300);
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* Toggle Switch */
+        .toggle-container {
+            margin: 20px 0;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 14px;
+            background: var(--gray-50);
+            border-radius: 10px;
+            border: 1px solid var(--gray-200);
+        }
+
+        .toggle {
+            position: relative;
+            width: 44px;
+            height: 24px;
+            -webkit-appearance: none;
+            appearance: none;
+            background: var(--gray-300);
+            outline: none;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .toggle:checked {
+            background: var(--primary);
+        }
+
+        .toggle::before {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: white;
+            top: 2px;
+            left: 2px;
+            transition: all 0.2s ease;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .toggle:checked::before {
+            left: 22px;
+        }
+
+        .toggle-label {
+            font-weight: 600;
+            color: var(--gray-700);
+            cursor: pointer;
+            user-select: none;
+            font-size: 14px;
+        }
+
+        /* Map */
+        #map {
+            width: 100%;
+            height: 400px;
+            border-radius: 12px;
+            border: 2px solid var(--gray-200);
+            box-shadow: var(--shadow-sm);
+        }
+
+        /* Stats Grid */
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+            gap: 14px;
+            margin-top: 24px;
+        }
+
+        .stat {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: 0 4px 6px -1px rgba(30, 64, 175, 0.2);
+            transition: all 0.2s ease;
+        }
+
+        .stat:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 15px -3px rgba(30, 64, 175, 0.3);
+        }
+
+        .stat-value {
+            font-size: clamp(28px, 5vw, 32px);
+            font-weight: 800;
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        .stat-label {
+            font-size: clamp(11px, 2vw, 12px);
+            opacity: 0.95;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        /* API Key Section */
+        .api-section {
+            background: linear-gradient(to bottom right, #fffbeb, #fef3c7);
+            padding: 24px;
+            border-radius: 12px;
+            margin-bottom: 24px;
+            border: 1px solid #fde68a;
+            border-left: 4px solid var(--warning);
+        }
+
+        .api-section-title {
+            font-size: 15px;
+            color: var(--gray-900);
+            font-weight: 700;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .api-section input {
+            width: 100%;
+            padding: 13px;
+            border: 2px solid #fbbf24;
+            border-radius: 10px;
+            font-size: 14px;
+            font-family: 'Courier New', monospace;
+            transition: all 0.2s ease;
+        }
+
+        .api-section input:focus {
+            outline: none;
+            border-color: var(--warning);
+            box-shadow: 0 0 0 3px rgba(217, 119, 6, 0.1);
+        }
+
+        .info-box {
+            background: #dbeafe;
+            padding: 12px;
+            border-radius: 8px;
+            margin-top: 12px;
+            border: 1px solid #93c5fd;
+            font-size: 13px;
+            color: var(--gray-700);
+        }
+
+        .info-box a {
+            color: var(--primary);
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+        .info-box a:hover {
+            text-decoration: underline;
+        }
+
+        /* Analysis Result */
+        .analysis {
+            background: linear-gradient(to bottom, #eff6ff, #dbeafe);
+            padding: 20px;
+            border-radius: 12px;
+            margin-top: 20px;
+            border-left: 4px solid var(--primary);
+        }
+
+        .analysis-title {
+            color: var(--primary);
+            margin-bottom: 14px;
+            font-size: 17px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .analysis-item {
+            margin: 10px 0;
+            padding: 12px;
+            background: var(--white);
+            border-radius: 8px;
+            font-size: 14px;
+            border: 1px solid var(--gray-200);
+        }
+
+        .analysis-item strong {
+            color: var(--gray-900);
+            font-weight: 600;
+        }
+
+        /* Loading Spinner */
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 24px;
+            color: var(--primary);
+        }
+
+        .loading.active {
+            display: block;
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            margin: 16px auto;
+            border: 4px solid var(--gray-200);
+            border-top: 4px solid var(--primary);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Incident List */
+        .incident-list {
+            max-height: 480px;
+            overflow-y: auto;
+            padding-right: 8px;
+        }
+
+        .incident-list::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .incident-list::-webkit-scrollbar-track {
+            background: var(--gray-100);
+            border-radius: 10px;
+        }
+
+        .incident-list::-webkit-scrollbar-thumb {
+            background: var(--gray-300);
+            border-radius: 10px;
+        }
+
+        .incident-list::-webkit-scrollbar-thumb:hover {
+            background: var(--gray-600);
+        }
+
+        .incident-item {
+            background: var(--white);
+            padding: 18px;
+            margin-bottom: 14px;
+            border-radius: 12px;
+            border: 1px solid var(--gray-200);
+            transition: all 0.2s ease;
+        }
+
+        .incident-item:hover {
+            border-color: var(--primary);
+            box-shadow: var(--shadow);
+        }
+
+        .incident-item p {
+            margin: 7px 0;
+            font-size: 14px;
+            color: var(--gray-700);
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 5px 12px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.025em;
+        }
+
+        .badge-emergency { background: #fee2e2; color: #991b1b; border: 1px solid #fecaca; }
+        .badge-theft { background: #fed7aa; color: #9a3412; border: 1px solid #fdba74; }
+        .badge-harassment { background: #fecaca; color: #991b1b; border: 1px solid #fca5a5; }
+        .badge-suspicious { background: #fef3c7; color: #92400e; border: 1px solid #fde68a; }
+        .badge-medical { background: #fee2e2; color: #7f1d1d; border: 1px solid #fecaca; }
+        .badge-other { background: #e0e7ff; color: #3730a3; border: 1px solid #c7d2fe; }
+
+        .badge-high { background: #fee2e2; color: #991b1b; border: 1px solid #fecaca; }
+        .badge-medium { background: #fed7aa; color: #9a3412; border: 1px solid #fdba74; }
+        .badge-low { background: #d1fae5; color: #065f46; border: 1px solid #a7f3d0; }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-container { padding: 12px 16px; }
+            .brand-text h1 { font-size: 16px; }
+            .brand-text p { display: none; }
+            .container { padding: 20px 16px; }
+            .hero { padding: 32px 20px; }
+            .card { padding: 24px; }
+            .emergency-btn { padding: 14px 28px; font-size: 14px; }
+            #map { height: 300px; }
+        }
+
+        @media (max-width: 480px) {
+            .stats { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="brand">
+                <div class="brand-logo">
+                    <i class="fas fa-shield-alt"></i>
+                </div>
+                <div class="brand-text">
+                    <h1>Campus Safety & Security</h1>
+                    <p>North Cap University • Real-time Monitoring</p>
+                </div>
+            </div>
+            <div class="nav-badge">
+                <i class="fas fa-bolt"></i>
+                <span>AI Powered</span>
+            </div>
+        </div>
+    </nav>
+    <div class="api-section">
+  <div class="api-section-title">
+    <i class="fas fa-key"></i> Gemini API Key
+  </div>
+  <input type="password" id="apiKey" placeholder="Paste your Google Gemini API key here">
+  <button class="btn-primary" style="margin-top:10px;" onclick="saveApiKey()">Save API Key</button>
+  <div class="info-box">
+    API key is stored locally and never sent anywhere else.
+  </div>
+</div>
+
+
+    <div class="container">
+        <div class="hero">
+            <div class="hero-icon">
+                <i class="fas fa-shield-alt"></i>
+            </div>
+            <h1>Incident Reporting & Response System</h1>
+            <p>Advanced artificial intelligence and geospatial analytics for real-time campus safety monitoring and emergency response coordination</p>
+            <button class="emergency-btn" onclick="reportEmergency()">
+                <i class="fas fa-exclamation-triangle"></i> EMERGENCY ALERT
+            </button>
+        </div>
+
+       
+
+        <div class="grid">
+            <div class="card">
+                <h2 class="card-header"><i class="fas fa-file-alt"></i> Incident Reporting</h2>
+                
+                <div class="toggle-container">
+                    <input type="checkbox" id="anonymousReport" class="toggle" checked>
+                    <label for="anonymousReport" class="toggle-label">
+                        <i class="fas fa-user-secret"></i> Anonymous Submission
+                    </label>
+                </div>
+
+                <form id="incidentForm" onsubmit="submitIncident(event)">
+                    <div class="form-group">
+                        <label class="form-label">Incident Description</label>
+                        <textarea 
+                            id="incidentDescription" 
+                            placeholder="Provide a detailed description of the incident...
+
+Examples:
+• Suspicious individual observed near library at 8:00 PM
+• Laptop theft reported from classroom 301
+• Medical assistance required at hostel block C"
+                            required
+                        ></textarea>
+                    </div>
+                    
+                    <button type="submit" class="btn-primary" id="submitBtn">
+                        <i class="fas fa-paper-plane"></i> Submit Report
+                    </button>
+                </form>
+
+                <div class="loading" id="loading">
+                    <div class="spinner"></div>
+                    <p><i class="fas fa-cog fa-spin"></i> Analyzing incident data...</p>
+                </div>
+
+                <div id="analysisResult"></div>
+            </div>
+
+            <div class="card">
+                <h2 class="card-header"><i class="fas fa-map-marked-alt"></i> Incident Geospatial Map</h2>
+                <div id="map"></div>
+                <div class="stats">
+                    <div class="stat">
+                        <span class="stat-value" id="totalIncidents">0</span>
+                        <span class="stat-label">Total</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-value" id="highPriority">0</span>
+                        <span class="stat-label">Critical</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-value" id="todayIncidents">0</span>
+                        <span class="stat-label">Today</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2 class="card-header"><i class="fas fa-history"></i> Incident Activity Log</h2>
+            <div class="incident-list" id="incidentList">
+                <p style="color: var(--gray-600); text-align: center; padding: 40px 20px; font-size: 14px;">
+                    <i class="fas fa-check-circle" style="font-size: 48px; opacity: 0.25; display: block; margin-bottom: 16px; color: var(--success);"></i>
+                    No incidents have been reported. Campus status: Secure
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let apiKey = '';
+        let map, markers = [], incidents = [];
+        const NCU_LOCATION = { lat: 28.4647, lng: 77.0736 };
+
+        window.onload = function() {
+            loadApiKey();
+            loadIncidents();
+            initMap();
+        };
+
+        function saveApiKey() {
+            apiKey = document.getElementById('apiKey').value;
+            localStorage.setItem('geminiApiKey', apiKey);
+            alert('API Key saved successfully!');
+        }
+
+        function loadApiKey() {
+            const saved = localStorage.getItem('geminiApiKey');
+            if (saved) {
+                apiKey = saved;
+                document.getElementById('apiKey').value = saved;
+            }
+        }
+
+        function loadIncidents() {
+            const saved = localStorage.getItem('campusIncidents');
+            if (saved) {
+                incidents = JSON.parse(saved);
+                updateUI();
+            }
+        }
+
+        function saveIncidents() {
+            localStorage.setItem('campusIncidents', JSON.stringify(incidents));
+        }
+
+        function initMap() {
+            map = new google.maps.Map(document.getElementById('map'), {
+                center: NCU_LOCATION,
+                zoom: 16,
+                styles: [
+                    { featureType: "all", elementType: "geometry", stylers: [{ color: "#f5f5f5" }] },
+                    { featureType: "water", elementType: "geometry", stylers: [{ color: "#c9e6ff" }] },
+                    { featureType: "road", elementType: "geometry", stylers: [{ color: "#ffffff" }] },
+                    { featureType: "poi", elementType: "labels", stylers: [{ visibility: "off" }] }
+                ],
+                mapTypeControl: false,
+                streetViewControl: false
+            });
+
+            new google.maps.Marker({
+                position: NCU_LOCATION,
+                map: map,
+                title: "North Cap University",
+                icon: { url: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png" }
+            });
+
+            updateMapMarkers();
+        }
+
+        async function submitIncident(event) {
+            event.preventDefault();
+            
+            // Always get the latest key from input
+            const inputKey = document.getElementById('apiKey').value.trim();
+            if (inputKey) {
+                apiKey = inputKey;
+                localStorage.setItem('geminiApiKey', apiKey);
+            }
+
+            if (!apiKey) {
+                alert('Please enter your Gemini API key first!');
+                return;
+            }
+
+            const description = document.getElementById('incidentDescription').value;
+            const isAnonymous = document.getElementById('anonymousReport').checked;
+            
+            document.getElementById('loading').classList.add('active');
+            document.getElementById('submitBtn').disabled = true;
+
+            try {
+                const analysis = await analyzeIncidentWithGemini(description);
+                
+                const incident = {
+                    id: Date.now(),
+                    description,
+                    timestamp: new Date().toISOString(),
+                    anonymous: isAnonymous,
+                    ...analysis
+                };
+
+                incidents.unshift(incident);
+                saveIncidents();
+                updateUI();
+
+                document.getElementById('incidentDescription').value = '';
+                
+                document.getElementById('analysisResult').innerHTML = `
+                    <div class="analysis">
+                        <h3 class="analysis-title"><i class="fas fa-check-circle"></i> Report Submitted Successfully</h3>
+                        <div class="analysis-item"><strong><i class="fas fa-tag"></i> Type:</strong> ${analysis.type}</div>
+                        <div class="analysis-item"><strong><i class="fas fa-map-marker-alt"></i> Location:</strong> ${analysis.location}</div>
+                        <div class="analysis-item"><strong><i class="fas fa-exclamation-triangle"></i> Priority:</strong> ${analysis.priority}</div>
+                        <div class="analysis-item"><strong><i class="fas fa-tasks"></i> Recommended Action:</strong> ${analysis.action}</div>
+                    </div>
+                `;
+            } catch (error) {
+                alert('Error: ' + error.message);
+            } finally {
+                document.getElementById('loading').classList.remove('active');
+                document.getElementById('submitBtn').disabled = false;
+            }
+        }
+
+        async function analyzeIncidentWithGemini(description) {
+            const response = await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=' + apiKey, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    contents: [{ parts: [{ text: `Analyze this campus incident and return ONLY valid JSON:
+
+"${description}"
+
+Format:
+{
+    "type": "emergency|theft|harassment|suspicious|medical|other",
+    "location": "specific location or 'Not specified'",
+    "priority": "high|medium|low",
+    "time": "time mentioned or 'Not specified'",
+    "action": "recommended action in one sentence"
+}` }] }],
+                    generationConfig: { temperature: 0.2, maxOutputTokens: 500 }
+                })
+            });
+
+            const data = await response.json();
+            if (data.error) throw new Error(data.error.message || 'API Error');
+            if (!data.candidates?.[0]) throw new Error('No AI response');
+
+            const text = data.candidates[0].content.parts[0].text;
+            const jsonMatch = text.match(/\{[\s\S]*\}/);
+            
+            return jsonMatch ? JSON.parse(jsonMatch[0]) : {
+                type: 'other', location: 'Not specified', priority: 'medium',
+                time: 'Not specified', action: 'Report logged for review'
+            };
+        }
+
+        function reportEmergency() {
+            if (!confirm('🚨 EMERGENCY ALERT\n\nThis will immediately notify campus security.\n\nConfirm emergency?')) return;
+
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(pos => {
+                    addEmergency({ lat: pos.coords.latitude, lng: pos.coords.longitude }, 'Current Location');
+                }, () => addEmergency(NCU_LOCATION, 'Campus'));
+            } else {
+                addEmergency(NCU_LOCATION, 'Campus');
+            }
+        }
+
+        function addEmergency(coords, location) {
+            incidents.unshift({
+                id: Date.now(),
+                description: 'EMERGENCY ALERT - Immediate assistance required',
+                timestamp: new Date().toISOString(),
+                anonymous: false,
+                type: 'emergency',
+                location,
+                priority: 'high',
+                time: 'NOW',
+                action: 'Security team dispatched',
+                coords
+            });
+            saveIncidents();
+            updateUI();
+            alert('🚨 Emergency alert sent! Security notified.');
+        }
+
+        function updateUI() {
+            updateStats();
+            updateIncidentList();
+            updateMapMarkers();
+        }
+
+        function updateStats() {
+            document.getElementById('totalIncidents').textContent = incidents.length;
+            document.getElementById('highPriority').textContent = incidents.filter(i => i.priority === 'high').length;
+            const today = incidents.filter(i => new Date(i.timestamp).toDateString() === new Date().toDateString()).length;
+            document.getElementById('todayIncidents').textContent = today;
+        }
+
+        function updateIncidentList() {
+            const listDiv = document.getElementById('incidentList');
+            
+            if (incidents.length === 0) {
+                listDiv.innerHTML = `
+                    <p style="color: var(--gray-600); text-align: center; padding: 40px 20px; font-size: 14px;">
+                        <i class="fas fa-check-circle" style="font-size: 48px; opacity: 0.25; display: block; margin-bottom: 16px; color: var(--success);"></i>
+                        No incidents reported. Campus status: Secure
+                    </p>
+                `;
+                return;
+            }
+
+            listDiv.innerHTML = incidents.map(incident => `
+                <div class="incident-item">
+                    <span class="badge badge-${incident.type}">${incident.type}</span>
+                    <span class="badge badge-${incident.priority}">${incident.priority}</span>
+                    <p><strong>Description:</strong> ${incident.description}</p>
+                    <p><strong>Location:</strong> ${incident.location}</p>
+                    <p><strong>Time:</strong> ${new Date(incident.timestamp).toLocaleString()}</p>
+                    <p><strong>Action:</strong> ${incident.action}</p>
+                    ${incident.anonymous ? '<p style="color: var(--gray-600); font-size: 12px;"><i class="fas fa-user-secret"></i> Anonymous Report</p>' : ''}
+                </div>
+            `).join('');
+        }
+
+        function updateMapMarkers() {
+            markers.forEach(m => m.setMap(null));
+            markers = [];
+
+            incidents.forEach(incident => {
+                const coords = incident.coords || {
+                    lat: NCU_LOCATION.lat + (Math.random() - 0.5) * 0.005,
+                    lng: NCU_LOCATION.lng + (Math.random() - 0.5) * 0.005
+                };
+
+                const marker = new google.maps.Marker({
+                    position: coords,
+                    map,
+                    title: incident.type,
+                    icon: {
+                        url: incident.priority === 'high' ? 
+                            "http://maps.google.com/mapfiles/ms/icons/red-dot.png" :
+                            incident.priority === 'medium' ?
+                            "http://maps.google.com/mapfiles/ms/icons/orange-dot.png" :
+                            "http://maps.google.com/mapfiles/ms/icons/yellow-dot.png"
+                    }
+                });
+
+                const infoWindow = new google.maps.InfoWindow({
+                    content: `<div style="padding: 10px;">
+                        <h3 style="color: var(--primary); font-size: 14px; margin-bottom: 5px;">${incident.type.toUpperCase()}</h3>
+                        <p style="font-size: 12px; margin: 3px 0;"><strong>Location:</strong> ${incident.location}</p>
+                        <p style="font-size: 12px; margin: 3px 0;"><strong>Priority:</strong> ${incident.priority}</p>
+                        <p style="font-size: 12px; margin: 3px 0;"><strong>Time:</strong> ${new Date(incident.timestamp).toLocaleString()}</p>
+                    </div>`
+                });
+
+                marker.addListener('click', () => infoWindow.open(map, marker));
+                markers.push(marker);
+            });
+        }
+    </script>
+
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBFw0Qbyq9zTFTd-tUY6dZWTgaQzuU17R8&callback=initMap" async defer></script>
+</body>
+</html>
